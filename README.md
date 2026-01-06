@@ -1,11 +1,28 @@
-# Figure inputs
+# Figure generation guide (self-contained)
 
-- `Code/Figure1_twin_debt.R` → Figure 1 (The twin debt problem) using `Data/EWN-database-January-2025.xlsx` and `Data/IMF_public_debt_GDP.xlsx`. Update `ROOT` at the top of the script to point to this `YOLO` folder before running.
-- `Code/Figure2a_inflation_bar.do` and `Code/Figure2b_US_devaluation.do` → Figure 2 panels (unexpected inflation bar + historical US devaluation line). They read `Data/Institution_data/WEO_cf_2019vintage_long_OECD_forplots.dta` and `Data/Ball_Replication.xlsx`; change the `cd`/export paths to this folder when running in Stata.
-- `Code/Figure3_public_liabilities.R` → Figure 3 (Components of public liabilities) using the country files under `Data/Canada`, `Data/France`, `Data/Germany`, `Data/Italy`, `Data/Japan`, and `Data/UK`, plus the same `Data/` root. It also pulls FRED/Eurostat/BoJ/BoE/StatCan series via APIs, so set `ROOT_DIR` to this `YOLO/Data` path and ensure internet/API access.
+**Folder assumption**: run everything from this folder. Update any hard-coded `ROOT`/`cd` paths inside the scripts to point here.
 
-# Ready-made figure files
+## Figure 1 – Twin debt problem
+- Script: `Code/Figure1_twin_debt.R`
+- Inputs: `Data/EWN-database-January-2025.xlsx`, `Data/IMF_public_debt_GDP.xlsx`
+- Output: `Figures/Figure1_twin_debt.png`
 
-- `Figures/Figure1_twin_debt.png` – Figure 1
-- `Figures/Figure2a_inflation_bar.png` and `Figures/Figure2b_US_devaluation.png` – Figure 2 panels (a) and (b)
-- `Figures/Figure3_public_liabilities.png` – Figure 3
+## Figure 2 – Unexpected inflation and US devaluation
+1) **Prep (run first in Stata)**  
+   - Script: `Code/Figure2_inflation_prep.do`  
+   - Uses: `Data/Institution_data/WEO.dta` and related WEO files  
+   - Produces: `Data/Institution_data/WEO_cf_2019vintage_long_OECD_forplots.dta`
+2) **Panel (a) bar chart**  
+   - Script: `Code/Figure2a_inflation_bar.do`  
+   - Inputs: `Data/Institution_data/WEO_cf_2019vintage_long_OECD_forplots.dta` (from step 1)  
+   - Output: `Figures/Figure2a_inflation_bar.png`
+3) **Panel (b) US history line**  
+   - Script: `Code/Figure2b_US_devaluation.do`  
+   - Inputs: `Data/Ball_Replication.xlsx`  
+   - Output: `Figures/Figure2b_US_devaluation.png`
+
+## Figure 3 – Components of public liabilities
+- Script: `Code/Figure3_public_liabilities.R`
+- Inputs: country files under `Data/Canada`, `Data/France`, `Data/Germany`, `Data/Italy`, `Data/Japan` (incl. `Japan/Japan CB Holdings Data`), `Data/UK`
+- External pulls: FRED/Eurostat/BoJ/BoE/StatCan APIs (requires internet access and a FRED key set in the script)
+- Output: `Figures/Figure3_public_liabilities.png`
